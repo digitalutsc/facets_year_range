@@ -1,0 +1,13 @@
+name: Facets Date Range widget
+description: Provides a Date Range widget in facets.
+package: Search
+type: module
+core_version_requirement: ^8.9 || ^9.2 || ^10
+php: 7.4
+dependencies:
+  - facets:facets
+
+# Information added by Drupal.org packaging script on 2022-01-12
+version: '1.0.0-beta1'
+project: 'facets_year_range'
+datestamp: 1641988087
