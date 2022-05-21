@@ -74,11 +74,11 @@
 
         $('ul.item-list__year_range').addClass( "list-group list-group-horizontal" );
         
-      $('input.facet-yearpicker-submit').click(function () {
+      $('.facet-yearpicker-submit').click(function () {
           refineSubmit();
       });
 
-      $('input.facet-yearpicker-reset').click(function () {
+      $('.facet-yearpicker-reset').click(function () {
           resetRefine();
       });
 
