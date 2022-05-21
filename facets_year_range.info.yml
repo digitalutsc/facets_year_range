@@ -1,4 +1,4 @@
-name: Facets Date Range widget
+name: Facets Year Range widget
 description: Provides a Date Range widget in facets.
 package: Search
 type: module

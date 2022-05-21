@@ -77,7 +77,7 @@ class YearRangeWidget extends WidgetPluginBase {
           '#type' => 'button',
           '#attributes' => [
             'type' => 'button',
-            'class' => ['facet-datepicker-submit', 'clipboard-button'],
+            'class' => ['facet-yearpicker-reset', 'clipboard-button'],
             'id' => $facet->id() . '-reset',
             'name' => $facet->id() . '-reset',
             'data-type' => 'datepicker-reset',
@@ -94,7 +94,7 @@ class YearRangeWidget extends WidgetPluginBase {
           '#type' => 'submit',
           '#attributes' => [
             'type' => 'submit',
-            'class' => ['facet-datepicker-submit', 'clipboard-button'],
+            'class' => ['facet-yearpicker-submit', 'clipboard-button'],
             'id' => $facet->id() . '-submit',
             'name' => $facet->id() . '-submit',
             'data-type' => 'datepicker-submit',

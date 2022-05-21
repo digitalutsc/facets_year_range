@@ -55,7 +55,11 @@
       }
 
       function resetRefine() {
-          window.location.href = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
+          if (location.port != "") {
+              window.location.href = window.location.protocol + '//' + window.location.hostname + ":" + location.port + window.location.pathname;
+          } else {
+              window.location.href = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
+          }
       }
 
       /*$("input.facet-year-range", context).on("change", autoSubmit);
@@ -70,11 +74,11 @@
 
         $('ul.item-list__year_range').addClass( "list-group list-group-horizontal" );
         
-      $('#advanced_search_year_created-submit').click(function () {
+      $('input.facet-yearpicker-submit').click(function () {
           refineSubmit();
       });
 
-      $('#advanced_search_year_created-reset').click(function () {
+      $('input.facet-yearpicker-reset').click(function () {
           resetRefine();
       });
 
