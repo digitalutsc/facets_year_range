@@ -2,6 +2,9 @@ year-range:
   version: VERSION
   js:
     js/year-range.js: { attributes: { defer: true } }
+  css:
+    theme:
+      css/facets_year_range.css: {}
   dependencies:
     - core/jquery
     - core/drupal
