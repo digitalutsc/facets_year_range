@@ -1,5 +1,4 @@
 year-range:
-  version: VERSION
   js:
     js/year-range.js: { attributes: { defer: true } }
   css:

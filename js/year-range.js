@@ -73,7 +73,7 @@
       });*/
 
         $('ul.item-list__year_range').addClass( "list-group list-group-horizontal" );
-        
+
       $('.facet-yearpicker-submit').click(function () {
           refineSubmit();
       });
@@ -98,7 +98,57 @@
             return params;
         };
 
+      // Add validation to from and to textbox
+      $.fn.inputFilter = function(callback, errMsg) {
+        return this.on("input keydown keyup mousedown mouseup select contextmenu drop focusout", function(e) {
+          if (callback(this.value)) {
+            // Accepted value
+            if (["focusout"].indexOf(e.type) >= 0
+              && this.id === "publication_date_collection__max"
+              && this.value < $("#publication_date_collection__min").val()
+            ){
+              $(this).addClass("input-error");
+              this.setCustomValidity("The 'To' year must be bigger than 'From' year.");
+              this.reportValidity();
+              this.value = this.oldValue;
+              try {
+                this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+              }
+              catch(err) {
+                $('#publication_date_collection_-submit').prop('disabled', true);
+                return;
+              }
+            }
+            else {
+              $('#publication_date_collection_-submit').prop('disabled', false);
+            }
 
+            if (["keydown","mousedown","focusout"].indexOf(e.type) >= 0){
+              $(this).removeClass("input-error");
+              this.setCustomValidity("");
+            }
+            this.oldValue = this.value;
+            this.oldSelectionStart = this.selectionStart;
+            this.oldSelectionEnd = this.selectionEnd;
+          } else if (this.hasOwnProperty("oldValue")) {
+            // Rejected value - restore the previous one
+            console.log("Rejected value - restore the previous one");
+            $(this).addClass("input-error");
+            this.setCustomValidity(errMsg);
+            this.reportValidity();
+            this.value = this.oldValue;
+            this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+          } else {
+            // Rejected value - nothing to restore
+            this.value = "";
+          }
+        });
+      };
+      // Install input filters.
+      $("#publication_date_collection__min").inputFilter(function(value) {
+        return /^\d*$/.test(value); }, "Must be an positive integer");
+      $("#publication_date_collection__max").inputFilter(function(value) {
+        return /^\d*$/.test(value); }, "Must be an positive integer");
     }
   };
 })(jQuery);
