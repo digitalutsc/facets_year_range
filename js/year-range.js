@@ -14,6 +14,10 @@
         return datum / 1000;
       }
 
+      function isEmpty(val){
+        return (val === undefined || val == null || val.length <= 0) ? true : false;
+      }
+
       function autoSubmit() {
         var $this = $(this);
         var facetId = $this.parents(".facets-widget-year_range").find("ul").attr("data-drupal-facet-id");
@@ -28,8 +32,10 @@
         var daterange = settings.facets.daterange[facetId];
         var min = $("input[id=".concat(facetId, "_min]")).val();
         var max = $("input[id=".concat(facetId, "_max]")).val();
-        console.log(daterange);
 
+        if (isEmpty(max)) {
+            max = min;
+        }
         // replace exist date range previous entered
         /*var params = parseQueryString(window.location.search);
         console.log(params);
