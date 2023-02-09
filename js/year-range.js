@@ -36,36 +36,43 @@
         if (isEmpty(max)) {
             max = min;
         }
-        // replace exist date range previous entered
-        /*var params = parseQueryString(window.location.search);
-        console.log(params);
-          var out = [];
-        for (var key in params) {
-            if (params[key].indexOf("year") !== -1) {
-                out.push(key + '=' + encodeURIComponent(myData[key]));
-            }
-        }
-        var currenturl = out.join('&');
-        console.log(currenturl);*/
 
-        var daterangestr = daterange.url.replace(window.location.pathname, "");
-        if (window.location.href.includes('?')) {
-            // current url has query params ==> append with & instead
-            daterangestr = daterangestr.replace("?", "&");
+        var params = parseQueryString(window.location.search);
+        var newParams = [];
+        var existingDateQuery = false; // true if a date query already exists
+
+        // update publication date in url if previously queried
+        for (var key in params) {
+          if (!params[key]) { // no search parameters in url
+            break;
+          }
+
+          // check for publication_date query
+          if (params[key].startsWith("publication_date")) { 
+            existingDateQuery = true;
+            newParams.push(key + "=" + encodeURIComponent("publication_date:(min:" + min + ",max:" + max + ")"));
+          }
+          else {
+            newParams.push(key + "=" + params[key]);
+          }
         }
-        daterangestr = daterangestr.replace("__year_range_min__", min).replace("__year_range_max__", max);
+        var newSearch = newParams.join("&");
+
+        // if no existing date query in url
+        if (!existingDateQuery) {
+          var daterangestr = daterange.url.replace(window.location.pathname, "");
+          if (newSearch !== "") {
+              // current url has query params ==> append with & instead
+              daterangestr = daterangestr.replace("?", "&");
+          }
+          daterangestr = daterangestr.replace("__year_range_min__", min).replace("__year_range_max__", max);
+          newSearch += daterangestr;
+        }
 
         // redirect happens
-        window.location.href = window.location.href + daterangestr;
-        //window.location.href = daterange.url.replace("__year_range_min__", min).replace("__year_range_max__", max);
-      }
+        window.location.search = newSearch; // update search parameters
 
-      function resetRefine() {
-          if (location.port != "") {
-              window.location.href = window.location.protocol + '//' + window.location.hostname + ":" + location.port + window.location.pathname;
-          } else {
-              window.location.href = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
-          }
+        //window.location.href = daterange.url.replace("__year_range_min__", min).replace("__year_range_max__", max);
       }
 
       /*$("input.facet-year-range", context).on("change", autoSubmit);
@@ -82,10 +89,6 @@
 
       $('.facet-yearpicker-submit').click(function () {
           refineSubmit();
-      });
-
-      $('.facet-yearpicker-reset').click(function () {
-          resetRefine();
       });
 
         // https://adevelopersnotes.wordpress.com/2013/04/11/parsing-a-query-string-into-an-array-with-javascript/

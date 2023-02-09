@@ -73,39 +73,19 @@ class YearRangeWidget extends WidgetPluginBase {
       ],
     ];
 
-    if (isset($min) && isset($max)) {
-      $build['#items']['reset'] = [
-        [
-          '#type' => 'button',
-          '#attributes' => [
-            'type' => 'button',
-            'class' => ['facet-yearpicker-reset', 'clipboard-button'],
-            'id' => $facet->id() . '-reset',
-            'name' => $facet->id() . '-reset',
-            'data-type' => 'datepicker-reset',
-          ],
-          '#value' => "Reset",
+    $build['#items']['refine'] = [
+      [
+        '#type' => 'submit',
+        '#attributes' => [
+          'type' => 'submit',
+          'class' => ['facet-yearpicker-submit', 'clipboard-button'],
+          'id' => $facet->id() . '-submit',
+          'name' => $facet->id() . '-submit',
+          'data-type' => 'datepicker-submit',
         ],
-      ];
-      $build['#items']['min']['#attributes']['readonly']= true;
-      $build['#items']['max']['#attributes']['readonly']= true;
-    }
-    else {
-      $build['#items']['refine'] = [
-        [
-          '#type' => 'submit',
-          '#attributes' => [
-            'type' => 'submit',
-            'class' => ['facet-yearpicker-submit', 'clipboard-button'],
-            'id' => $facet->id() . '-submit',
-            'name' => $facet->id() . '-submit',
-            'data-type' => 'datepicker-submit',
-          ],
-          '#value' => "Refine",
-        ],
-      ];
-    }
-
+        '#value' => "Refine",
+      ],
+    ];
 
     $url = array_shift($results)->getUrl()->toString();
     $build['#attached']['library'][] = 'facets_year_range/year-range';
