@@ -36,10 +36,10 @@ class YearRangeWidget extends WidgetPluginBase {
     $max = reset($active)['max'] ?? NULL;
 
     /*if (isset($min) || empty($min)) {
-      $min = 0;
+    $min = 0;
     }
     if (isset($max) || empty($max)) {
-      $max = date("Y");
+    $max = date("Y");
     }*/
 
     $build['#items'] = [

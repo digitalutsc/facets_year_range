@@ -34,23 +34,23 @@ class YearRangeProcessor extends ProcessorPluginBase implements PreQueryProcesso
       if (preg_match('/\(min:([^,]*),max:(.*)\)/i', $item, $matches)) {
         if (!empty($matches[1]) && !empty($matches[2])) {
           $item = [
-            $matches[1],
-            $matches[2],
+            0 => $matches[1],
+            1 => $matches[2],
             'min' => $matches[1],
             'max' => $matches[2],
           ];
         }
         elseif (!empty($matches[1]) && empty($matches[2])) {
           $item = [
-            $matches[1],
-            date('U', strtotime('+100 years')),
+            0 => $matches[1],
+            1 => date('U', strtotime('+100 years')),
             'min' => $matches[1],
           ];
         }
         elseif (empty($matches[1]) && !empty($matches[2])) {
           $item = [
-            date('U', 0),
-            $matches[2],
+            0 => date('U', 0),
+            1 => $matches[2],
             'max' => $matches[2],
           ];
         }
