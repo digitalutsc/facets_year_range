@@ -97,31 +97,31 @@ class YearRangeIntegrationTest extends FacetsTestBase {
       'widget' => 'year_range',
       'facet_settings[year_range][status]' => TRUE,
     ], 'Save');
-
+    
     $this->assertSession()->checkboxChecked('edit-facet-settings-year-range-status');
 
     $this->drupalGet('search-api-test-fulltext');
     $this->assertFacetBlocksAppear();
-    $this->assertSession()->pageTextContains('Displaying 15 search results');
+    $this->assertSession()->pageTextContainsOnce('Displaying 15 search results');
 
     $url = Url::fromUserInput('/search-api-test-fulltext', ['query' => ['f[0]' => 'created:(min:1614384000,max:1620864000)']]);
     $this->drupalGet($url->setAbsolute()->toString());
 
-    $this->assertSession()->pageTextContains('foo date 4');
-    $this->assertSession()->pageTextContains('foo date 1');
-    $this->assertSession()->pageTextContains('foo date 2');
-    $this->assertSession()->pageTextContains('foo date 3');
-    $this->assertSession()->pageTextContains('Displaying 4 search results');
+    $this->assertSession()->pageTextContainsOnce('foo date 4');
+    $this->assertSession()->pageTextContainsOnce('foo date 1');
+    $this->assertSession()->pageTextContainsOnce('foo date 2');
+    $this->assertSession()->pageTextContainsOnce('foo date 3');
+    $this->assertSession()->pageTextContainsOnce('Displaying 4 search results');
 
     $url = Url::fromUserInput('/search-api-test-fulltext', ['query' => ['f[0]' => 'daterange:(min:,max:1641225702)']]);
     $this->drupalGet($url->setAbsolute()->toString());
 
-    $this->assertSession()->pageTextContains('Displaying 15 search results');
+    $this->assertSession()->pageTextContainsOnce('Displaying 15 search results');
 
     $url = Url::fromUserInput('/search-api-test-fulltext', ['query' => ['f[0]' => 'daterange:(min:,max:)']]);
     $this->drupalGet($url->setAbsolute()->toString());
 
-    $this->assertSession()->pageTextContains('Displaying 15 search results');
+    $this->assertSession()->pageTextContainsOnce('Displaying 15 search results');
   }
 
 }

@@ -1,0 +1,5 @@
+# Config schema for date range, you can find the implementation in
+# Drupal\facets_year_range\Plugin\facets\widget\DateRangeWidget.
+facet.widget.config.year_range:
+  type: facet.widget.default_config
+  label: 'Year Range widget configuration'
