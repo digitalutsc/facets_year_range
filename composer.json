@@ -1,29 +1,11 @@
 {
-    "name": "drupal/facets_year_range",
+    "name": "islandora_lite/facets_year_range",
     "description": "Provides a Date Range widget in facets.",
     "type": "drupal-module",
-    "authors": [
-        {
-            "name": "Alexandre Dias",
-            "homepage": "https://www.drupal.org/u/saidatom"
-        },
-        {
-            "name": "Claudiu Cristea",
-            "homepage": "https://www.drupal.org/u/claudiu.cristea"
-        },
-        {
-            "name": "Ilias Dimopoulos",
-            "homepage": "https://www.drupal.org/u/idimopoulos-0"
-        },
-        {
-            "name": "Pieter Frenssen",
-            "homepage": "https://www.drupal.org/u/pfrenssen"
-        }
-    ],
     "license": "GPL-2.0+",
-    "homepage": "https://drupal.org/project/facets_year_range",
+    "homepage": "https://github.com/digitalutsc/facets_year_range/",
     "support": {
-        "issues": "https://drupal.org/project/issues/facets_year_range"
+        "issues": "https://github.com/digitalutsc/facets_year_range/issues"
     },
     "minimum-stability": "dev",
     "require": {
