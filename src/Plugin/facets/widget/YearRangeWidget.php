@@ -44,11 +44,11 @@ class YearRangeWidget extends WidgetPluginBase {
 
     $build['#items'] = [
       'min' => [
-        '#type' => 'number',
+        '#type' => 'textfield',
         '#title' => $this->t('From'),
         '#value' => $min,
         '#attributes' => [
-          'class' => ['facet-year-range'],
+          'class' => ['facet-yearpicker-min','facet-year-range'],
           'id' => $facet->id() . '_min',
           'name' => $facet->id() . '_min',
           'data-type' => 'year-range-min',
@@ -58,11 +58,11 @@ class YearRangeWidget extends WidgetPluginBase {
         '#theme_wrappers' => [],
       ],
       'max' => [
-        '#type' => 'number',
+        '#type' => 'textfield',
         '#title' => $this->t('To'),
         '#value' => $max,
         '#attributes' => [
-          'class' => ['facet-year-range'],
+          'class' => ['facet-yearpicker-max', 'facet-year-range'],
           'id' => $facet->id() . '_max',
           'name' => $facet->id() . '_max',
           'data-type' => 'year-range-max',
@@ -90,6 +90,7 @@ class YearRangeWidget extends WidgetPluginBase {
     $url = array_shift($results)->getUrl()->toString();
     $build['#attached']['library'][] = 'facets_year_range/year-range';
     $build['#attached']['drupalSettings']['facets']['daterange'][$facet->id()] = [
+      'alias' => $facet->getUrlAlias(),
       'url' => $url,
     ];
     return $build;
