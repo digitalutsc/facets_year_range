@@ -9,6 +9,8 @@
   Drupal.facets = Drupal.facets || {};
   Drupal.behaviors.facetsDateRange = {
     attach: function attach(context, settings) {
+      var facetId = $(".facets-widget-year_range").find("ul").attr("data-drupal-facet-id");
+
       function toTimestamp(strDate) {
         var datum = Date.parse(strDate);
         return datum / 1000;
@@ -18,146 +20,125 @@
         return (val === undefined || val == null || val.length <= 0) ? true : false;
       }
 
-      function autoSubmit() {
-        var $this = $(this);
-        var facetId = $this.parents(".facets-widget-year_range").find("ul").attr("data-drupal-facet-id");
-        var daterange = settings.facets.daterange[facetId];
-        var min = toTimestamp($("input[id=".concat(facetId, "_min]")).val()) || "";
-        var max = toTimestamp($("input[id=".concat(facetId, "_max]")).val()) || "";
-        window.location.href = daterange.url.replace("__year_range_min__", min).replace("__year_range_max__", max);
-      }
-
       function refineSubmit() {
-        var facetId = $(".facets-widget-year_range").find("ul").attr("data-drupal-facet-id");
         var daterange = settings.facets.daterange[facetId];
-        var min = $("input[id=".concat(facetId, "_min]")).val();
-        var max = $("input[id=".concat(facetId, "_max]")).val();
-
-        if (isEmpty(max)) {
-            max = min;
+        var alias = daterange.alias;
+        var min = $('.facet-yearpicker-min').val();
+        var max = $('.facet-yearpicker-max').val();
+        // If its empty highlight the input
+        if (isEmpty(min) && isEmpty(max)) {
+          $('.facet-yearpicker-min').addClass("input-error");
+          $('.facet-yearpicker-max').addClass("input-error");
+          return;
         }
-
+        if (isEmpty(max)) {
+          max = min;
+        }
+        if (isEmpty(min)) {
+          min = max;
+        }
         var params = parseQueryString(window.location.search);
         var newParams = [];
-        var existingDateQuery = false; // true if a date query already exists
-
-        // update publication date in url if previously queried
+        var existingDateQuery = false;
+        // Update `alias` query in URL if previously queried
         for (var key in params) {
-          if (!params[key]) { // no search parameters in url
+          // No search params in URL
+          if (!params[key]) {
             break;
           }
 
-          // check for publication_date query
-          if (params[key].startsWith("publication_date")) { 
+          // Check for `alias` query
+          if (params[key].startsWith(alias)) { 
             existingDateQuery = true;
-            newParams.push(key + "=" + encodeURIComponent("publication_date:(min:" + min + ",max:" + max + ")"));
+            newParams.push(key + "=" + encodeURIComponent(alias + ":(min:" + min + ",max:" + max + ")"));
           }
           else {
             newParams.push(key + "=" + params[key]);
           }
         }
         var newSearch = newParams.join("&");
-
-        // if no existing date query in url
+        // If no existing date query in url
         if (!existingDateQuery) {
           var daterangestr = daterange.url.replace(window.location.pathname, "");
-          if (newSearch !== "") {
-              // current url has query params ==> append with & instead
-              daterangestr = daterangestr.replace("?", "&");
-          }
+          newSearch = "";
           daterangestr = daterangestr.replace("__year_range_min__", min).replace("__year_range_max__", max);
           newSearch += daterangestr;
         }
 
-        // redirect happens
-        window.location.search = newSearch; // update search parameters
-
-        //window.location.href = daterange.url.replace("__year_range_min__", min).replace("__year_range_max__", max);
+        // Redirect window to new Search URL
+        window.location.search = newSearch; 
       }
 
-      /*$("input.facet-year-range", context).on("change", autoSubmit);
-      $("input.facet-year-range", context).on("keypress", function (e) {
-        $(this).off("change blur");
-        $(this).on("blur", autoSubmit);
-
-        if (e.keyCode === 13) {
-          autoSubmit();
-        }
-      });*/
-
-        $('ul.item-list__year_range').addClass( "list-group list-group-horizontal" );
+      $('ul.item-list__year_range').addClass( "list-group list-group-horizontal" );
 
       $('.facet-yearpicker-submit').click(function () {
-          refineSubmit();
+        refineSubmit();
       });
 
-        // https://adevelopersnotes.wordpress.com/2013/04/11/parsing-a-query-string-into-an-array-with-javascript/
-        var parseQueryString = function( queryString ) {
-            var params = {}, queries, temp, i, l;
+      // https://adevelopersnotes.wordpress.com/2013/04/11/parsing-a-query-string-into-an-array-with-javascript/
+      var parseQueryString = function( queryString ) {
+        var params = {}, queries, temp, i, l;
 
-            // Split into key/value pairs
-            queries = queryString.split("&");
+        // Split into key/value pairs
+        queries = queryString.split("&");
 
-            // Convert the array of strings into an object
-            for ( i = 0, l = queries.length; i < l; i++ ) {
-                temp = queries[i].split('=');
-                params[temp[0]] = temp[1];
-            }
+        // Convert the array of strings into an object
+        for ( i = 0, l = queries.length; i < l; i++ ) {
+          temp = queries[i].split('=');
+          params[temp[0]] = temp[1];
+        }
 
-            return params;
-        };
-
-      // Add validation to from and to textbox
-      $.fn.inputFilter = function(callback, errMsg) {
-        return this.on("input keydown keyup mousedown mouseup select contextmenu drop focusout", function(e) {
-          if (callback(this.value)) {
-            // Accepted value
-            if (["focusout"].indexOf(e.type) >= 0
-              && this.id === "publication_date_collection__max"
-              && this.value < $("#publication_date_collection__min").val()
-            ){
-              $(this).addClass("input-error");
-              this.setCustomValidity("The 'To' year must be bigger than 'From' year.");
-              this.reportValidity();
-              this.value = this.oldValue;
-              try {
-                this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-              }
-              catch(err) {
-                $('#publication_date_collection_-submit').prop('disabled', true);
-                return;
-              }
-            }
-            else {
-              $('#publication_date_collection_-submit').prop('disabled', false);
-            }
-
-            if (["keydown","mousedown","focusout"].indexOf(e.type) >= 0){
-              $(this).removeClass("input-error");
-              this.setCustomValidity("");
-            }
-            this.oldValue = this.value;
-            this.oldSelectionStart = this.selectionStart;
-            this.oldSelectionEnd = this.selectionEnd;
-          } else if (this.hasOwnProperty("oldValue")) {
-            // Rejected value - restore the previous one
-            console.log("Rejected value - restore the previous one");
-            $(this).addClass("input-error");
-            this.setCustomValidity(errMsg);
-            this.reportValidity();
-            this.value = this.oldValue;
-            this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-          } else {
-            // Rejected value - nothing to restore
-            this.value = "";
-          }
-        });
+        return params;
       };
-      // Install input filters.
-      $("#publication_date_collection__min").inputFilter(function(value) {
-        return /^\d*$/.test(value); }, "Must be an positive integer");
-      $("#publication_date_collection__max").inputFilter(function(value) {
-        return /^\d*$/.test(value); }, "Must be an positive integer");
+
+      function checkDate(obj) {
+        var minInput = $('.facet-yearpicker-min').val().trim();
+        var maxInput = $('.facet-yearpicker-max').val().trim();
+        var min = minInput === "" ? maxInput : minInput;
+        var max = maxInput === "" ? minInput : maxInput;
+        if (min === "" && max === "") {
+          $('.facet-yearpicker-submit').prop('disabled', false);
+          return;
+        }
+        min = parseInt(min);
+        max = parseInt(max);
+        // Check if min and max years are in proper closed range otherwise disable submit
+        if (min > max) {
+          $(obj).addClass("input-error");
+          obj.setCustomValidity("The 'To' year must be bigger than 'From' year.");
+          obj.reportValidity();
+          $('.facet-yearpicker-submit').prop('disabled', true);
+          return;
+        }
+        else {
+          $('.facet-yearpicker-min').removeClass("input-error");
+          $('.facet-yearpicker-max').removeClass("input-error");
+          $('.facet-yearpicker-submit').prop('disabled', false);
+        }
+      }
+
+      function validateInput() {
+        // Get input
+        var inputValue = this.value;
+        if (!(/^\d+$/.test(inputValue))) {
+          this.setCustomValidity("Input must be a valid year!");
+          this.reportValidity();
+          this.value = inputValue.replace(/\D/g, '');
+          this.fixed = true;
+          return;
+        }
+        // Ensure the replace doesn't reset the error message
+        if (!this.fixed) {
+          $('.facet-yearpicker-min').removeClass("input-error");
+          $('.facet-yearpicker-max').removeClass("input-error");
+          this.setCustomValidity("");
+          this.fixed = false;
+        }
+        checkDate(this);
+      }
+      
+      $('.facet-yearpicker-min').on('input', validateInput);
+      $('.facet-yearpicker-max').on('input', validateInput);
     }
   };
 })(jQuery);

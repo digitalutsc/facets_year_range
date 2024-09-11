@@ -85,7 +85,7 @@ class YearRangeProcessor extends ProcessorPluginBase implements PreQueryProcesso
       // Remove all the query filters for the field of the facet.
       if (isset($query[$filter_key])) {
         foreach ($query[$filter_key] as $id => $filter) {
-          if (strpos($filter . $url_processor->getSeparator(), $facet->getUrlAlias()) === 0) {
+          if (strpos($filter, $facet->getUrlAlias()) === 0) {
             unset($query[$filter_key][$id]);
           }
         }
