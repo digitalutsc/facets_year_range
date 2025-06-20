@@ -83,7 +83,7 @@ class YearRangeWidget extends WidgetPluginBase {
           'name' => $facet->id() . '-submit',
           'data-type' => 'datepicker-submit',
         ],
-        '#value' => "Refine",
+        '#value' => $this->t("Refine"),
       ],
     ];
 
