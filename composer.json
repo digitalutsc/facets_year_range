@@ -10,6 +10,6 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.4 || ^8",
-        "drupal/facets": "^1.6 || ^2"
+        "drupal/facets": "^1.6 || ^2 || ^3"
     }
 }
