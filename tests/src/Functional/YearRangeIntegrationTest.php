@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\Tests\facets_year_range\Functional;
 
@@ -97,7 +97,7 @@ class YearRangeIntegrationTest extends FacetsTestBase {
       'widget' => 'year_range',
       'facet_settings[year_range][status]' => TRUE,
     ], 'Save');
-    
+
     $this->assertSession()->checkboxChecked('edit-facet-settings-year-range-status');
 
     $this->drupalGet('search-api-test-fulltext');
