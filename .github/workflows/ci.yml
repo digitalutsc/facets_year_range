@@ -1,0 +1,15 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  islandora-module-ci:
+    uses: digitalutsc/reusable_workflows/.github/workflows/islandora-module-ci.yml@main
+    with:
+      module_name: facets_year_range
+      install_chromedriver: true
