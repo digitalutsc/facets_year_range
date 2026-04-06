@@ -10,6 +10,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.4 || ^8",
-        "drupal/facets": "^1.6 || ^2 || ^3"
+        "drupal/facets": "^1.6 || ^2 || ^3",
+        "drupal/search_api_solr": "^4.3"
     }
 }
