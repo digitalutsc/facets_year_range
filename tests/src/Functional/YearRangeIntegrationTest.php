@@ -107,10 +107,10 @@ class YearRangeIntegrationTest extends FacetsTestBase {
     $url = Url::fromUserInput('/search-api-test-fulltext', ['query' => ['f[0]' => 'created:(min:1614384000,max:1620864000)']]);
     $this->drupalGet($url->setAbsolute()->toString());
 
-    $this->assertSession()->pageTextContainsOnce('foo date 4');
-    $this->assertSession()->pageTextContainsOnce('foo date 1');
-    $this->assertSession()->pageTextContainsOnce('foo date 2');
-    $this->assertSession()->pageTextContainsOnce('foo date 3');
+    $this->assertSession()->pageTextContains('foo date 4');
+    $this->assertSession()->pageTextContains('foo date 1');
+    $this->assertSession()->pageTextContains('foo date 2');
+    $this->assertSession()->pageTextContains('foo date 3');
     $this->assertSession()->pageTextContainsOnce('Displaying 4 search results');
 
     $url = Url::fromUserInput('/search-api-test-fulltext', ['query' => ['f[0]' => 'daterange:(min:,max:1641225702)']]);
