@@ -24,6 +24,7 @@ class YearRangeIntegrationTest extends FacetsTestBase {
     'views',
     'node',
     'search_api',
+    'search_api_solr',
     'facets',
     'facets_year_range',
     'block',
