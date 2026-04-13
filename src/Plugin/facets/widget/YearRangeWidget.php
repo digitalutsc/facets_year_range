@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\facets_year_range\Plugin\facets\widget;
 
@@ -48,7 +48,7 @@ class YearRangeWidget extends WidgetPluginBase {
         '#title' => $this->t('From'),
         '#value' => $min,
         '#attributes' => [
-          'class' => ['facet-yearpicker-min','facet-year-range'],
+          'class' => ['facet-yearpicker-min', 'facet-year-range'],
           'id' => $facet->id() . '_min',
           'name' => $facet->id() . '_min',
           'data-type' => 'year-range-min',

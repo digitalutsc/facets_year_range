@@ -5,3 +5,4 @@ type: module
 core_version_requirement: ^8.9 || ^9.2 || ^10 || ^11
 dependencies:
   - facets:facets
+  - search_api_solr:search_api_solr

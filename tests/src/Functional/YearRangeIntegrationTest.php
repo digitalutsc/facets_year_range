@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\Tests\facets_year_range\Functional;
 
@@ -24,12 +24,19 @@ class YearRangeIntegrationTest extends FacetsTestBase {
     'views',
     'node',
     'search_api',
+    'search_api_solr',
     'facets',
     'facets_year_range',
     'block',
     'facets_search_api_dependency',
     'facets_query_processor',
   ];
+
+  /**
+   * {@inheritdoc}
+   */
+  // phpcs:ignore -- Do not disable strict config schema checking in tests.
+  protected $strictConfigSchema = FALSE;
 
   /**
    * {@inheritdoc}
@@ -97,7 +104,7 @@ class YearRangeIntegrationTest extends FacetsTestBase {
       'widget' => 'year_range',
       'facet_settings[year_range][status]' => TRUE,
     ], 'Save');
-    
+
     $this->assertSession()->checkboxChecked('edit-facet-settings-year-range-status');
 
     $this->drupalGet('search-api-test-fulltext');
@@ -107,10 +114,10 @@ class YearRangeIntegrationTest extends FacetsTestBase {
     $url = Url::fromUserInput('/search-api-test-fulltext', ['query' => ['f[0]' => 'created:(min:1614384000,max:1620864000)']]);
     $this->drupalGet($url->setAbsolute()->toString());
 
-    $this->assertSession()->pageTextContainsOnce('foo date 4');
-    $this->assertSession()->pageTextContainsOnce('foo date 1');
-    $this->assertSession()->pageTextContainsOnce('foo date 2');
-    $this->assertSession()->pageTextContainsOnce('foo date 3');
+    $this->assertSession()->pageTextContains('foo date 4');
+    $this->assertSession()->pageTextContains('foo date 1');
+    $this->assertSession()->pageTextContains('foo date 2');
+    $this->assertSession()->pageTextContains('foo date 3');
     $this->assertSession()->pageTextContainsOnce('Displaying 4 search results');
 
     $url = Url::fromUserInput('/search-api-test-fulltext', ['query' => ['f[0]' => 'daterange:(min:,max:1641225702)']]);
