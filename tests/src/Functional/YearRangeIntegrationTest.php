@@ -35,6 +35,12 @@ class YearRangeIntegrationTest extends FacetsTestBase {
   /**
    * {@inheritdoc}
    */
+  // phpcs:ignore -- Do not disable strict config schema checking in tests.
+  protected $strictConfigSchema = FALSE;
+
+  /**
+   * {@inheritdoc}
+   */
   public function setUp(): void {
     parent::setUp();
 
