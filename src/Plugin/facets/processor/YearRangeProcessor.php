@@ -79,7 +79,6 @@ class YearRangeProcessor extends ProcessorPluginBase implements PreQueryProcesso
       }
     });
     $facet->setActiveItems($active_items);
-
   }
 
   /**
