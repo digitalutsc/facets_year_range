@@ -28,6 +28,19 @@ class YearRangeProcessor extends ProcessorPluginBase implements PreQueryProcesso
    * {@inheritdoc}
    */
   public function preQuery(FacetInterface $facet): void {
+    /* Check if the query type is 'search_api_string' in the memory site. 
+    if so, it comes from invalid alias 'publication_date', and must not be processed. */
+    $host = \Drupal::request()->getHost();
+    $subdomain = explode('.', $host)[0];
+    $publication_date_query_type = 'search_api_string';
+    $memory_site_subdomain = 'memory';
+
+    if ($subdomain === $memory_site_subdomain && $facet->getQueryType() === $publication_date_query_type) {
+      $facet->setActiveItems([]);
+      return;
+    }
+
+    // Regular flow
     $active_items = $facet->getActiveItems();
 
     array_walk($active_items, function (&$item) {
@@ -66,6 +79,7 @@ class YearRangeProcessor extends ProcessorPluginBase implements PreQueryProcesso
       }
     });
     $facet->setActiveItems($active_items);
+
   }
 
   /**
