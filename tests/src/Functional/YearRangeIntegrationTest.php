@@ -99,7 +99,6 @@ class YearRangeIntegrationTest extends FacetsTestBase {
       'widget' => 'year_range',
       'facet_settings[year_range][status]' => TRUE,
     ], 'Save');
-    
     $this->assertSession()->checkboxChecked('edit-facet-settings-year-range-status');
 
     $this->drupalGet('search-api-test-fulltext');
