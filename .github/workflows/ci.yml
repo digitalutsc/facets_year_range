@@ -9,7 +9,7 @@ on:
 
 jobs:
   islandora-module-ci:
-    uses: digitalutsc/reusable_workflows/.github/workflows/islandora-module-ci.yml@main
+    uses: digitalutsc/reusable_workflows/.github/workflows/islandora-module-ci.yml@omarhxk-patch-1
     with:
       module_name: facets_year_range
       install_chromedriver: true
