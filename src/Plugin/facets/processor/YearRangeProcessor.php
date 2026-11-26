@@ -28,6 +28,14 @@ class YearRangeProcessor extends ProcessorPluginBase implements PreQueryProcesso
    * {@inheritdoc}
    */
   public function preQuery(FacetInterface $facet): void {
+    // Only the range query type understands [min, max] items. If this processor
+    // is attached to a facet that resolves to another query type (e.g. a links
+    // widget on a string facet), leave its active items untouched: converting
+    // them to arrays makes the string query type throw a TypeError.
+    if ($facet->getQueryType() !== 'search_api_range') {
+      return;
+    }
+
     $active_items = $facet->getActiveItems();
 
     array_walk($active_items, function (&$item) {
